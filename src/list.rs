@@ -1,8 +1,10 @@
 //A Rust trait works similarly to an abstract class in C++
-//except that we can't hold data inside of them, they are
-//only for behavior
+//except that we can't hold data inside of them,
+//they are only for behavior
 pub trait List {
     //This will be whatever type we want to contain in the list
+    //The technical reason we need this here is a little complex
+    //Rool with it
     type Val;
     
     //add a node as the last item of the list
