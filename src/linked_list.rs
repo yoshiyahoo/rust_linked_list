@@ -1,7 +1,5 @@
 use std::ptr::NonNull;
-
-use crate::list::*;
-//a struct with <T> works similarly to a template in C++
+//a struct with <T> works similarly to a template class in C++
 pub struct Node<T> {
     //the value at this current node.
     val: T,
@@ -31,16 +29,15 @@ impl<T> Node<T> {
 }
 
 //this is where we implement the List trait functions
-impl<T> List for LinkedList<T> {
-    type Val = T;
+impl<T> LinkedList<T> {
     
-    fn append(&mut self, elem: Self::Val) {
+    fn append(&mut self, elem: T) {
         unsafe {
             let mut curr = self.head;
             while curr != None {
                 curr = (*curr.unwrap().as_ptr()).next;
             }
-            let next_node = &mut Node::new(elem) as *mut Node<T>;  
+            let next_node = &mut Node::new(elem);  
             curr = NonNull::new(next_node);
             self.len += 1;
         }
@@ -50,29 +47,29 @@ impl<T> List for LinkedList<T> {
         todo!();
     }
 
-    fn get_element(&self, position: usize) -> Result<Self::Val, String> {
+    fn get_element(&self, position: usize) -> Result<&T, String> {
         let mut curr = self.head;
         
-        if position > self.len || position < 0{
+        if position > self.len {
             Err(String::from("access error: index out of range"))
         }
         else {
             unsafe {
-                for i in 0..position {
+                for _i in 0..position {
                     curr = (*curr.unwrap().as_ptr()).next;
                 }
-                Ok((*curr.unwrap().as_ptr()).val)
+                Ok(&(*curr.unwrap().as_ptr()).val)
             }
         }
 
     }
 
     fn get_length(&self) -> usize {
-        //we don't need a semicolon on every line, Rust can interpret this as a u32
+        //we don't need a semicolon on every line, Rust can interpret this as a usize
         self.len
     }
 
-    fn insert(&mut self, position: usize, elem: Self::Val) -> Result<(), String> {
+    fn insert(&mut self, position: usize, elem: T) -> Result<(), String> {
         todo!();
     }
 
@@ -85,7 +82,7 @@ impl<T> List for LinkedList<T> {
         todo!();
     }
 
-    fn replace(&mut self, position: usize, elem: Self::Val) -> Result<(), String> {
+    fn replace(&mut self, position: usize, elem: T) -> Result<(), String> {
         todo!();
     }
 }

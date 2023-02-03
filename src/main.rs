@@ -1,4 +1,3 @@
-mod list;
 mod linked_list;
 
 
