@@ -1,4 +1,5 @@
-use std::ptr::{NonNull, null, null_mut};
+use core::fmt;
+use std::ptr::{null, null_mut};
 use std::alloc::{alloc, dealloc, Layout};
 
 //a struct with <T> works similarly to a template class in C++
@@ -28,6 +29,27 @@ impl<T> Node<T> {
         }
     }
 }
+
+impl<T: fmt::Display> fmt::Display for LinkedList<T> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut buf = String::new();
+        unsafe {
+            let mut curr = self.head;
+            loop {
+                if (*curr).next == null_mut() {
+                    buf += format!("{}", (*curr).val).as_str();
+                    break;
+                }
+                else {
+                    buf += format!("{} -> ", (*curr).val).as_str();
+                    curr = (*curr).next;
+                }
+            }
+        }
+        write!(f, "{}", buf)
+    }
+}
+
 
 //this is where we implement the List trait functions
 impl<T> LinkedList<T> {
@@ -107,6 +129,21 @@ impl<T> LinkedList<T> {
     }
 
     pub fn replace(&mut self, position: usize, elem: T) -> Result<(), &str> {
-        todo!();
+        if position >= self.len {
+            return Err("Position out of range");
+        }
+        unsafe {
+            let mut curr = self.head;
+            for _i in 0..position {
+                if curr != null_mut() {
+                    curr = (*curr).next;
+                }
+                else {
+                    return Err("Position out of range");
+                }
+            }
+            (*curr).val = elem;
+            Ok(())
+        }
     }
 }
