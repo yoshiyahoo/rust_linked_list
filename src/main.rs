@@ -11,5 +11,13 @@ fn main() {
     println!("And a bigger one: {}", linked_list);
 
     linked_list.replace(0, 7).unwrap();
-    println!("Here is an element of a linked list: {}", linked_list.get_element(0).unwrap());
+    println!("Here is that linked list with a replaced element: {}", linked_list);
+
+    linked_list.insert(1, 3).unwrap();
+    println!("Here is a linked list with an inserted element: {}", linked_list);
+    linked_list.remove(1).unwrap();
+    println!("Here is a linked list with a removed element: {}", linked_list);
+
+    linked_list.clear();
+    println!("Here is an empty linked list: {}", linked_list);
 }
